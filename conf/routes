@@ -4,6 +4,13 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
+GET     /api/users                            controllers.PacemakerAPI.users()
+DELETE  /api/users                            controllers.PacemakerAPI.deleteAllUsers()
+POST    /api/users                            controllers.PacemakerAPI.createUser()
+
+GET    /api/users/:id                         controllers.PacemakerAPI.user(id: Long)
+DELETE /api/users/:id                         controllers.PacemakerAPI.deleteUser(id: Long)
+PUT    /api/users/:id                         controllers.PacemakerAPI.updateUser(id: Long)
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
