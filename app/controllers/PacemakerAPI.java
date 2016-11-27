@@ -60,4 +60,174 @@ public class PacemakerAPI extends Controller
     }
     return result;
   }
+  
+  public Result activities (Long userId)
+  {  
+    User user = User.findById(userId);
+    return ok(renderActivity(user.activities));
+  }
+
+  public Result createActivity (Long userId)
+  { 
+    User     user     = User.findById(userId);
+    Activity activity = renderActivity(request().body().asJson().toString());  
+
+    user.activities.add(activity);
+    user.save();
+
+    return ok(renderActivity(activity));
+  }
+
+  public Result activity (Long userId, Long activityId)
+  {  
+    User     user     = User.findById(userId);
+    Activity activity = Activity.findById(activityId);
+
+    if (activity == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      return user.activities.contains(activity)? ok(renderActivity(activity)): badRequest();
+    }
+  }  
+
+  public Result deleteActivity (Long userId, Long activityId)
+  {  
+    User     user     = User.findById(userId);
+    Activity activity = Activity.findById(activityId);
+
+    if (activity == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      if (user.activities.contains(activity))
+      {
+        user.activities.remove(activity);
+        activity.delete();
+        user.save();
+        return ok();
+      }
+      else
+      {
+        return badRequest();
+      }
+
+    }
+  }  
+
+  public Result updateActivity (Long userId, Long activityId)
+  {
+    User     user     = User.findById(userId);
+    Activity activity = Activity.findById(activityId);
+
+    if (activity == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      if (user.activities.contains(activity))
+      {
+        Activity updatedActivity = renderActivity(request().body().asJson().toString());
+        activity.distance = updatedActivity.distance;
+        activity.location = updatedActivity.location;
+        activity.type     = updatedActivity.type;
+
+        activity.save();
+        return ok(renderActivity(updatedActivity));
+      }
+      else
+      {
+        return badRequest();
+      }
+    }
+  }
+  
+  public Result locations (Long activityId)
+  {  
+    Activity activity = Activity.findById(activityId);
+    return ok(renderLocation(activity.route));
+  }
+  
+  public Result createLocation (Long actvityId)
+  { 
+	 Activity activity = Activity.findById(actvityId);
+    Location location = renderLocation(request().body().asJson().toString());  
+
+    activity.route.add(location);
+    activity.save();
+
+    return ok(renderLocation(location));
+  }
+  
+  public Result location (Long activityId, Long locationId)
+  {  
+    Activity activity = Activity.findById(activityId);
+    Location location = Location.findById(locationId);
+
+    if (location == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      return activity.route.contains(location)? ok(renderLocation(location)): badRequest();
+    }
+  } 
+  
+  public Result deleteLocation (Long activityId, Long locationId)
+  {  
+	  Activity activity = Activity.findById(activityId);
+	  Location location = Location.findById(locationId);
+
+    if (location == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      if (activity.route.contains(location))
+      {
+    	activity.route.remove(location);
+        location.delete();
+        activity.save();
+        return ok();
+      }
+      else
+      {
+        return badRequest();
+      }
+
+    }
+  } 
+  
+  public Result updateLocation (Long activityId, Long locationId)
+  {
+	  Activity activity = Activity.findById(activityId);
+	  Location location = Location.findById(locationId);
+
+    if (location == null)
+    {
+      return notFound();
+    }
+    else
+    {
+      if (activity.route.contains(location))
+      {
+        Location updatedLocation = renderLocation(request().body().asJson().toString());
+        location.latitude = updatedLocation.latitude;
+        location.longitude = updatedLocation.longitude;
+        location.save();
+        return ok(renderLocation(updatedLocation));
+      }
+      else
+      {
+        return badRequest();
+      }
+    }
+  }
 }

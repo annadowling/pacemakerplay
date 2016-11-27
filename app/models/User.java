@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import com.google.common.base.Objects;
@@ -18,6 +19,10 @@ public class User extends Model
   public String lastname;
   public String email;
   public String password;
+  
+  @OneToMany(cascade=CascadeType.ALL)
+  public List<Activity> activities = new ArrayList<Activity>();
+
   public static Find<String, User> find = new Find<String, User>(){};
 
   public User()
@@ -47,7 +52,7 @@ public class User extends Model
         .add("Firstname", firstname)
         .add("Lastname", lastname)
         .add("Email", email)
-        .add("Passwrod", password).toString();
+        .add("Password", password).toString();
   }
 
   @Override
@@ -88,5 +93,4 @@ public class User extends Model
       user.delete();
     }
   } 
-
 }

@@ -1,0 +1,66 @@
+@()
+
+@main("Upload activity") {
+
+  <div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="#" class="header item">
+        PaceMaker App
+      </a>
+      <a href="/upload" class="item">Add Activities</a>
+      <div class="ui simple dropdown item">
+        Options <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/dashboard">Dashboard</a>
+          <a class="item" href="#">Add a location</a>
+          <div class="divider"></div>
+          <a class="item" href="@routes.AuthController.logout()">Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="ui middle aligned center aligned grid">  
+      <form action="/submitactivity" method="POST"> class="ui large form">
+      <div class="ui stacked secondary  segment">
+      <h3 class="ui header">Enter Activity Details: </h3>
+        <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="write square icon"></i>
+            <input type="text" name="location" placeholder="Location">
+          </div>
+        </div>
+          <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="write square icon"></i>
+            <input type="text" name="type" placeholder="Type">
+          </div>
+        </div>
+          <br>
+          <div class="field">
+          <div class="ui left icon input">
+            <i class="write square icon"></i>
+            <input type="number" name="distance" placeholder="Distance">
+          </div>
+        </div>
+        <br>
+           <div class="field">
+          <div class="ui left icon input">
+            <i class="calendar icon"></i>
+            <input type="date" name="date" placeholder="Date">
+          </div>
+        </div>
+        <br>
+           <div class="field">
+          <div class="ui left icon input">
+            <i class="write square icon"></i>
+            <input type="number" name="duration" placeholder="Duration">
+          </div>
+        </div>
+        <br>
+        <button class="ui fluid large teal submit button">Add Activity</button>
+      </div>
+    </form> 
+    </div>
+}

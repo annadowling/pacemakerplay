@@ -1,0 +1,59 @@
+@main("Sign up!") {
+    <br>
+  <div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui image header">
+      <div class="content">
+        Sign up to the PaceMaker App
+      </div>
+    </h2>
+    <br>
+    <form class="ui large form" action="/newUser" method="POST">
+      <div class="ui stacked secondary  segment">
+      <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="firstname" placeholder="First Name">
+          </div>
+        </div>
+        <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="lastname" placeholder="Last Name">
+          </div>
+        </div>
+        <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="email" placeholder="Email">
+          </div>
+        </div>
+        <br>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password">
+          </div>
+        </div>
+        <br>
+         <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="passwordConfirmation" placeholder="Confirm Password">
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="ui fluid large teal submit button">Sign Up</button>
+      </div>
+    </form>
+
+    <div class="ui message">
+       Already have a user? <a href="@routes.AuthController.login()">Log in now!</a>
+    </div>
+  </div>
+</div>  
+    }
+

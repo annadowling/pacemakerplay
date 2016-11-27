@@ -1,0 +1,52 @@
+@(activities: List[Activity])
+
+@main(s"Welcome") { 
+   <div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="#" class="header item">
+        PaceMaker App
+      </a>
+      <a href="/dashboard" class="item">Dashboard</a>
+      <div class="ui simple dropdown item">
+        Options <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/upload">Add Activities</a>
+          <a class="item" href="#">Add a location</a>
+          <div class="divider"></div>
+          <a class="item" href="@routes.AuthController.logout()">Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <br>
+  <section class="ui raised segment">
+    <div class="ui grid">
+      <aside class="six wide column">
+        <img src="" class="ui medium image">
+      </aside>
+      <article class="eight wide column">
+        <h3> <class="ui header"> Activities </h3>
+        <table class="ui celled table segment">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+  		      @for(i <- 0 until activities.size) {
+  		        <tr>
+  		          <td> @activities(i).location </td> 
+  		          <td> @activities(i).type </td> 
+  		          <td> @activities(i).distance </td> 
+  		          <td> @activities(i).duration </td> 
+  		          <td> @activities(i).date </td> 
+  		        </tr>
+  		        }
+  		  </tbody>
+        </table>
+      </article>
+    </div>
+  </section>
+}

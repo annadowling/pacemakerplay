@@ -1,9 +1,18 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
+# Home page
+GET     /                           @controllers.AuthController.login()
+GET     /signup                     @controllers.AuthController.signup()
+GET     /login                      @controllers.AuthController.login()
+GET     /logout                     @controllers.AuthController.logout()
+POST    /newUser                    @controllers.AuthController.newUser()
+POST    /authenticate               @controllers.AuthController.authenticate()
 
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET     /dashboard                                 controllers.Dashboard.index()
+GET     /upload                                    controllers.Dashboard.uploadActivityForm()
+POST    /submitactivity                            controllers.Dashboard.submitActivity()
+
 GET     /api/users                            controllers.PacemakerAPI.users()
 DELETE  /api/users                            controllers.PacemakerAPI.deleteAllUsers()
 POST    /api/users                            controllers.PacemakerAPI.createUser()
@@ -11,10 +20,21 @@ POST    /api/users                            controllers.PacemakerAPI.createUse
 GET    /api/users/:id                         controllers.PacemakerAPI.user(id: Long)
 DELETE /api/users/:id                         controllers.PacemakerAPI.deleteUser(id: Long)
 PUT    /api/users/:id                         controllers.PacemakerAPI.updateUser(id: Long)
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+
+#User/Activity routes
+GET    /api/users/:userId/activities                controllers.PacemakerAPI.activities(userId: Long)
+POST   /api/users/:userId/activities                controllers.PacemakerAPI.createActivity(userId: Long)
+GET    /api/users/:userId/activities/:activityId    controllers.PacemakerAPI.activity(userId: Long, activityId:Long)
+DELETE /api/users/:userId/activities/:activityId    controllers.PacemakerAPI.deleteActivity(userId: Long, activityId:Long)
+PUT    /api/users/:userId/activities/:activityId    controllers.PacemakerAPI.updateActivity(userId: Long, activityId:Long)
+
+#Activity/Location routes
+GET    /api/activities/:activityId/route                 controllers.PacemakerAPI.locations(activityId: Long)
+POST   /api/activities/:activityId/route                controllers.PacemakerAPI.createLocation(activityId: Long)
+GET    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.location(activityId:Long, locationId:Long)
+DELETE /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.deleteLocation(activityId:Long, locationId:Long)
+PUT    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.updateLocation(activityId:Long, locationId:Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
