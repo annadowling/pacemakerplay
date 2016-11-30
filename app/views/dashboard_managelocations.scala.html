@@ -1,0 +1,56 @@
+@()
+@loggedInUser = @{User.findByEmail(session().get("email"))}
+
+  @main("Manage Locations") {
+<div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="#" class="header item">
+        PaceMaker App
+      </a>
+      <a href="/manageLocation" class="item">Manage Locations</a>
+      <div class="ui simple dropdown item">
+        Options <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/dashboard">Dashboard</a>
+          <a class="item" href="/upload">Add Activities</a>
+          <div class="divider"></div>
+          <a class="item" href="@routes.AuthController.logout()">Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+    <section class="ui raised segment">
+      <div class="ui grid">
+        <aside class="four wide column">
+        </aside>
+        <article class="six wide column">
+          <h3> <class="ui header"> Locations </h3>
+          <table class="ui celled table segment">
+          @for(i <- 0 until loggedInUser.activities.size) {
+            <thead>
+              <tr>
+                <th>Location for @loggedInUser.activities(i).activityType </th>
+                <th>Add Location Form: </th>
+              </tr>
+            </thead>
+            <tbody>
+    		     @if(loggedInUser.activities(i).route.size > 0) { 
+              @for(j <- 0 until loggedInUser.activities(i).route.size) {
+    		        <tr>
+                  <td> <a class="item" target="_blank" href="http://maps.google.com/?q=@loggedInUser.activities(i).route(j).latitude,@loggedInUser.activities(i).route(j).longitude"> @loggedInUser.activities(i).route(j).toString()</a> </td> 
+    		       </tr>
+    		      }
+            } else {
+                <tr>
+                  <td> No locations assigned to this activity.</td> 
+                  <td> @dashboard_uploadlocation(loggedInUser.activities(i).id) </td>
+               </tr>
+          }
+            </tbody>
+          }
+          </table>
+        </article>
+      </div>
+    </section>
+  }

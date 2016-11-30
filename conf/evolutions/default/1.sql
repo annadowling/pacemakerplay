@@ -10,7 +10,7 @@ create table activity (
   distance                      double,
   date                          timestamp,
   duration                      double,
-  type                          varchar(255),
+  activity_type                 varchar(255),
   constraint pk_activity primary key (id)
 );
 create sequence activity_seq;

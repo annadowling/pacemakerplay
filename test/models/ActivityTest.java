@@ -31,7 +31,7 @@ public class ActivityTest extends WithApplication{
 
       //Test that the fields in the returned activity was set up correctly
       assertNotNull(activity);
-      assertThat("Run", equalTo(activity.type));
+      assertThat("Run", equalTo(activity.activityType));
       assertThat("Tramore", equalTo(activity.location));
       assertThat(12.33, equalTo(activity.distance));
   }

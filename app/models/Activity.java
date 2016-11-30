@@ -9,9 +9,12 @@ import java.util.List;
 import com.google.common.base.Objects;
 import javax.persistence.*;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EntityConcurrencyMode;
+import com.avaje.ebean.annotation.ConcurrencyMode;
 
 @SuppressWarnings("serial")
 @Entity
+@EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Table(name="activity")
 public class Activity extends Model
 {
@@ -22,7 +25,7 @@ public class Activity extends Model
   public double distance;
   public Date date;
   public double duration;
-  public String type;
+  public String activityType;
   
   @OneToMany(cascade=CascadeType.ALL)
   public List<Location> route = new ArrayList<Location>();
@@ -31,9 +34,9 @@ public class Activity extends Model
   {
   }
    
-  public Activity(String type, String location, double distance, Date date, double duration)
+  public Activity(String activityType, String location, double distance, Date date, double duration)
   {
-    this.type      = type;
+    this.activityType = activityType;
     this.location  = location;
     this.distance  = distance;
     this.date = date;
@@ -48,7 +51,7 @@ public class Activity extends Model
                                .addValue(distance)
                                .addValue(date)
                                .addValue(duration)
-                               .addValue(type)
+                               .addValue(activityType)
                                .toString();
   }
   
@@ -58,7 +61,7 @@ public class Activity extends Model
     if (obj instanceof Activity)
     {
       final Activity other = (Activity) obj;
-      return Objects.equal(type, other.type) 
+      return Objects.equal(activityType, other.activityType) 
           && Objects.equal(location,  other.location)
           && Objects.equal(distance,  other.distance)  
           && Objects.equal(date,  other.date) 
@@ -73,7 +76,7 @@ public class Activity extends Model
   @Override  
   public int hashCode()  
   {  
-     return Objects.hashCode(this.id, this.type, this.location, this.distance, this.date, this.duration);  
+     return Objects.hashCode(this.id, this.activityType, this.location, this.distance, this.date, this.duration);  
   } 
   
   public static List<Activity> findAll()

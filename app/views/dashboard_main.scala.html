@@ -11,7 +11,7 @@
         Options <i class="dropdown icon"></i>
         <div class="menu">
           <a class="item" href="/upload">Add Activities</a>
-          <a class="item" href="#">Add a location</a>
+          <a class="item" href="/manageLocation ">Manage locations</a>
           <div class="divider"></div>
           <a class="item" href="@routes.AuthController.logout()">Log out</a>
         </div>
@@ -31,6 +31,10 @@
             <tr>
               <th>Location</th>
               <th>Distance</th>
+              <th>Duration</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Routes</th>
             </tr>
           </thead>
           
@@ -38,10 +42,13 @@
   		      @for(i <- 0 until activities.size) {
   		        <tr>
   		          <td> @activities(i).location </td> 
-  		          <td> @activities(i).type </td> 
-  		          <td> @activities(i).distance </td> 
+  		          <td> @activities(i).distance km</td>
   		          <td> @activities(i).duration </td> 
   		          <td> @activities(i).date </td> 
+  		          <td> @activities(i).activityType </td> 
+  		          <td> @for(a <- 0 until activities(i).route.size) { 
+                    <a class="item" target="_blank" href="http://maps.google.com/?q=@activities(i).route(a).latitude,@activities(i).route(a).longitude"> @activities(i).route(a).toString()</a>
+                  } </td> 
   		        </tr>
   		        }
   		  </tbody>

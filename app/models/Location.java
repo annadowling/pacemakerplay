@@ -6,8 +6,11 @@ import java.util.List;
 import javax.persistence.*;
 import play.data.validation.Constraints.Required;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EntityConcurrencyMode;
+import com.avaje.ebean.annotation.ConcurrencyMode;
 
 @Entity
+@EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Table(name="location")
 public class Location extends Model {
 	@Id

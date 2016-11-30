@@ -18,7 +18,7 @@ public class Fixtures {
         };
     
     public static String activityJson  = "{\n"
-            +  "\"type\"      : \"run\"                 ,\n"
+            +  "\"activityType\"      : \"run\"                 ,\n"
             +  "\"location\"  : \"Dunmore\"             ,\n"
             +  "\"distance\"  : 3                        \n"
        + "}";

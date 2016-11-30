@@ -11,7 +11,10 @@ POST    /authenticate               @controllers.AuthController.authenticate()
 
 GET     /dashboard                                 controllers.Dashboard.index()
 GET     /upload                                    controllers.Dashboard.uploadActivityForm()
+GET     /manageLocation                              controllers.Dashboard.manageLocations()
 POST    /submitactivity                            controllers.Dashboard.submitActivity()
+POST    /submitlocation/:activityId               controllers.Dashboard.submitLocation(activityId: Long)
+
 
 GET     /api/users                            controllers.PacemakerAPI.users()
 DELETE  /api/users                            controllers.PacemakerAPI.deleteAllUsers()

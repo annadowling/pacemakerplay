@@ -7,8 +7,11 @@ import com.google.common.base.Objects;
 
 import javax.persistence.*;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EntityConcurrencyMode;
+import com.avaje.ebean.annotation.ConcurrencyMode;
 
 @Entity
+@EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Table(name="my_user")
 public class User extends Model
 {
