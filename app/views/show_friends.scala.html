@@ -1,0 +1,56 @@
+@(users: List[User])
+@currentUser = @{User.findByEmail(session().get("email"))}
+@main(s"View Friends") { 
+<div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="#" class="header item">
+        PaceMaker App
+      </a>
+      <a href="/dashboard" class="item">Dashboard</a>
+      <div class="ui simple dropdown item">
+        Options <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/upload">Add Activities</a>
+          <a class="item" href="/manageLocation ">Manage locations</a>
+          <a class="item" href="/follow">Follow Friends</a>
+          <a class="item" href="/showFriends">View Friends</a>
+          <a class="item" href="/map">Map</a>
+          <div class="divider"></div>
+          <a class="item" href="@routes.AuthController.logout()">Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>   
+  <br>
+    <br>
+      <br>
+  <div class="ui middle aligned center aligned grid">  
+    <div class="ui grid">
+      <article class="thirty wide column">
+        <table class="ui celled table segment">
+        <thead>
+            <tr>
+              <th>@currentUser.firstname 's friends</th>
+              <th>Friends Public Profile</th>
+              <th>Unfollow?</th>
+            </tr>
+          </thead>
+          <tbody>
+  		     @for(i <- 0 until users.size){
+  		     @if(users(i).id != currentUser.id) {
+  		     <form action="/unFollow/@users(i).id" method="POST">
+  		        <tr>
+  		          <td> <i class="right triangle icon"></i> @users(i).firstname @users(i).lastname
+  		          <td><a href="/publicProfile/@users(i).id"> View Public Profile</a></td>
+  		          <td><button class="mini ui red submit button" onclick="return confirm('Are you sure you want to unfollow @users(i).firstname @users(i).lastname');"> <i class="add user icon"></i>UnFollow</button></td> 
+  		        </td>
+  		        </tr>
+  		        </form>
+  		        }
+  		        }
+  		  </tbody>
+        </table>
+      </article>
+    </div>
+      </div>
+}

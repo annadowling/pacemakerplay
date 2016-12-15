@@ -1,5 +1,6 @@
 package controllers;
 
+import play.data.DynamicForm;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -66,6 +67,36 @@ public class AuthController extends Controller {
           return redirect(routes.AuthController.login());
         }
     }
+    
+    public Result editProfile() {
+    	return ok(edit_profile.render());
+    }
+    
+	public Result editUserProfile() {
+		Result result = null;
+		DynamicForm requestData = Form.form().bindFromRequest();
+		String firstname = requestData.get("firstname");
+		String lastname = requestData.get("lastname");
+		String email = requestData.get("email");
+		String password = requestData.get("password");
+		String confirmedPassword = requestData.get("passwordConfirmation");
+		User currentUser = User.findByEmail(session().get("email"));
+        if(firstname != null && !firstname.equals("")){
+        	currentUser.firstname = firstname;
+        }
+        if(lastname != null & !lastname.equals("")){
+        	currentUser.lastname = lastname;
+        }
+        if(password != null && !password.equals("") && !password.equals(currentUser.password) && password.equals(confirmedPassword)){
+        	currentUser.password = password;
+        }
+        if(email != null && !email.equals("") && !email.equals(currentUser.email)){
+        	currentUser.email = email;
+        	session().clear();
+        }
+        currentUser.save();
+		return redirect(routes.AuthController.login());
+	}
 
 }
 

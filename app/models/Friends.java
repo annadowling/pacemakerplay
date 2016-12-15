@@ -43,21 +43,6 @@ public class Friends extends Model {
 		return find.all();
 	}
 	
-	
-	public static List<Friends> findPendingFriendRequestsToUser(Long userId) {
-		return find.where().eq("friendId", userId).eq("added", false).findList();
-	}
-	
-	
-	public static List<Friends> findPendingFriendRequestsFromUser(Long userId) {
-		return find.where().eq("userId", userId).eq("added", false).findList();
-	}
-	
-	
-	public static List<Friends> findAllAcceptedFriendReuqests(Long userId) {
-		return find.where().eq("userId", userId).eq("added", true).findList();
-	}
-	
 	public static List<Friends> findAllFriends(Long userId) {
 		return find.where().eq("userId", userId).findList();
 	}

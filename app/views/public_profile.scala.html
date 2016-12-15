@@ -1,6 +1,6 @@
-@(activities: List[Activity])
-
-@main(s"Welcome") { 
+@(userId: Long)
+@publicUser = @{User.findById(userId)}
+@main(s"Welcome to @publicUser.firstname @publicUser.lastname 's profile") { 
 <div class="ui fixed inverted menu">
     <div class="ui container">
       <a href="#" class="header item">
@@ -15,7 +15,6 @@
           <a class="item" href="/follow">Follow Friends</a>
           <a class="item" href="/showFriends">View Friends</a>
           <a class="item" href="/map">Map</a>
-          <a class="item" href="/editProfile">Edit User Profile</a>
           <div class="divider"></div>
           <a class="item" href="@routes.AuthController.logout()">Log out</a>
         </div>
@@ -29,7 +28,10 @@
         <img src="" class="ui medium image">
       </aside>
       <article class="eight wide column">
-        <h3> <class="ui header"> Activities </h3>
+      <h3>User Details:</h3>
+      <p><b>Name:</b> <i>@publicUser.firstname @publicUser.lastname</i></p>
+      <p><b>Email:</b><i> @publicUser.email</i></p>
+        <h3> <class="ui header">@publicUser.firstname 's activities </h3>
         <table class="ui celled table segment">
           <thead>
             <tr>
@@ -43,15 +45,15 @@
           </thead>
           
           <tbody>
-  		      @for(i <- 0 until activities.size) {
+  		      @for(i <- 0 until publicUser.activities.size) {
   		        <tr>
-  		          <td> @activities(i).location </td> 
-  		          <td> @activities(i).distance km</td>
-  		          <td> @activities(i).duration </td> 
-  		          <td> @activities(i).date </td> 
-  		          <td> @activities(i).activityType </td> 
-  		          <td> @for(a <- 0 until activities(i).route.size) { 
-                    <a class="item" target="_blank" href="http://maps.google.com/?q=@activities(i).route(a).latitude,@activities(i).route(a).longitude"> @activities(i).route(a).toString()</a>
+  		          <td> @publicUser.activities(i).location </td> 
+  		          <td> @publicUser.activities(i).distance km</td>
+  		          <td> @publicUser.activities(i).duration </td> 
+  		          <td> @publicUser.activities(i).date </td> 
+  		          <td> @publicUser.activities(i).activityType </td> 
+  		          <td> @for(a <- 0 until publicUser.activities(i).route.size) { 
+                    <a class="item" target="_blank" href="http://maps.google.com/?q=@publicUser.activities(i).route(a).latitude,@publicUser.activities(i).route(a).longitude"> @publicUser.activities(i).route(a).toString()</a>
                   } </td> 
   		        </tr>
   		        }

@@ -1,0 +1,48 @@
+@main(s"View Locations on Map") { 
+   <div class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="#" class="header item">
+        PaceMaker App
+      </a>
+      <a href="/dashboard" class="item">Dashboard</a>
+      <div class="ui simple dropdown item">
+        Options <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/upload">Add Activities</a>
+          <a class="item" href="/manageLocation ">Manage locations</a>
+          <a class="item" href="/follow">Follow Friends</a>
+          <a class="item" href="/showFriends">View Friends</a>
+          <a class="item" href="/map">Map</a>
+          <div class="divider"></div>
+          <a class="item" href="@routes.AuthController.logout()">Log out</a>
+        </div>
+      </div>
+    </div>
+  </div>   
+  <br>
+  <br>
+  <div style="width:300px; margin:0 auto;">
+  <h2>Enter a location:</h2>
+  </div>
+    <br> 
+  <div class="ui middle aligned center aligned grid">  
+    <div class="ui grid">
+<table>
+<tbody>
+ <tr>
+ <td>
+ <input id="addressinput" type="text" style="width: 895px;"/> 
+   <input id="Button1" style="width: 180px" class="mini ui teal submit button" type="button" value="Locate" onclick="return Button1_onclick()" /> 
+ </td>
+ </tr>
+<tr>
+<td colspan ="2">
+<div id ="map" style="height: 580px; width: 1080px">
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+}

@@ -8,6 +8,8 @@ GET     /login                      @controllers.AuthController.login()
 GET     /logout                     @controllers.AuthController.logout()
 POST    /newUser                    @controllers.AuthController.newUser()
 POST    /authenticate               @controllers.AuthController.authenticate()
+GET     /editProfile                @controllers.AuthController.editProfile()
+POST    /editUserProfile            @controllers.AuthController.editUserProfile()
 
 GET     /dashboard                                 controllers.Dashboard.index()
 GET     /upload                                    controllers.Dashboard.uploadActivityForm()
@@ -38,6 +40,15 @@ GET    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI
 DELETE /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.deleteLocation(activityId:Long, locationId:Long)
 PUT    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.updateLocation(activityId:Long, locationId:Long)
 
+#Friend routes
+GET /follow                                 @controllers.Dashboard.getAllUsers()
+POST /follow/:friendId                      @controllers.Dashboard.addFriend(friendId: Long)
+GET /showFriends                            @controllers.Dashboard.showFriendsPage()
+POST /unFollow/:friendId                    @controllers.Dashboard.unFriend(friendId: Long)
+GET /publicProfile/:friendId                @controllers.Dashboard.showFriendsPublicProfile(friendId: Long)
+
+#Map routes
+GET /map                                     controllers.Dashboard.getMap()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

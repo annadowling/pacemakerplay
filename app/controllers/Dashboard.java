@@ -1,6 +1,9 @@
 package controllers;
 
+import static parsers.JsonParser.renderUser;
+
 import java.util.Date;
+import java.util.List;
 
 import akka.event.slf4j.Logger;
 import models.Activity;
@@ -9,6 +12,7 @@ import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.*;
+import utils.FriendUtils;
 import views.html.*;
 
 public class Dashboard extends Controller
@@ -24,6 +28,10 @@ public class Dashboard extends Controller
   public Result uploadActivityForm()
   {
     return ok(dashboard_uploadactivity.render());
+  }
+  
+  public Result getMap(){
+	  return ok(map.render()); 
   }
   
   public Result manageLocations()
@@ -65,9 +73,50 @@ public class Dashboard extends Controller
 			activity.save();
 			result = redirect(routes.Dashboard.index());
 		} else {
-			//Logger.(new Date() + " Invalid format for location " + latitude + ", " + longitude);
 			result = redirect(routes.Dashboard.index());
 		}
 		return result;
+  }
+  
+  public Result  getAllUsers()
+  {
+    List<User> users = User.findAll();
+    return ok(show_users.render(users));
+  }
+  
+  public Result addFriend(Long friendId){
+	  List<User> users = User.findAll();
+	  String email = session().get("email");
+	  User currentUser = User.findByEmail(email);
+	  if(currentUser != null){
+		  FriendUtils.followFriend(currentUser.id, friendId);
+	  }
+	  return showFriendsPage();
+  }
+  
+  public Result unFriend(Long friendId){
+	  String email = session().get("email");
+	  User currentUser = User.findByEmail(email);
+	  if(currentUser != null){
+		  FriendUtils.unfollowFriend(currentUser.id, friendId);
+	  }
+	  return showFriendsPage();
+  }
+  
+  public Result showFriendsPage()
+  {
+    String email = session().get("email");
+    User currentUser = User.findByEmail(email);
+    List<User> friendsOfCurrentUser = FriendUtils.showfriends(currentUser.id);
+    return ok(show_friends.render(friendsOfCurrentUser));
+  }
+  
+  public Result showFriendsPublicProfile(Long friendId){
+	  User user = null;
+	  if(friendId != null){
+		  user = FriendUtils.findUserByfriendId(friendId);
+	  }
+	  return ok(public_profile.render(user.id));
+	  
   }
 }
