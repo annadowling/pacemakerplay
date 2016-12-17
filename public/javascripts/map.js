@@ -2,7 +2,7 @@ var map;
     var geocoder;
     function InitializeMap() {
 
-        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var latlng = new google.maps.LatLng(52.1614, -7.149295);
         var myOptions =
         {
             zoom: 8,

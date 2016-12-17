@@ -123,4 +123,23 @@ public class Dashboard extends Controller
 	  return ok(public_profile.render(user.id));
 	  
   }
+  
+  public Result renderManageActivitiesPage(){
+	  String email = session().get("email");
+	    User user = User.findByEmail(email);
+	    if(user != null){
+	    return ok(manage_activities.render(user.activities));
+	    }else{
+	    	return badRequest(login.render());
+	    }  
+  }
+  
+  public Result showEditActivitiesPage(Long activityId){
+	  Activity activity = null;
+	  if(activityId != null){
+		  activity = Activity.findById(activityId);
+	  }
+	  return ok(edit_activity.render(activity.id));
+	  
+  }
 }

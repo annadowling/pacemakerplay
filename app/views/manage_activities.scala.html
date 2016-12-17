@@ -1,13 +1,13 @@
 @(activities: List[Activity])
 
-@main(s"Welcome") { 
+@main(s"Manage Activities") { 
 <div class="ui fixed inverted menu">
     <div class="ui container">
       <a href="#" class="header item">
         PaceMaker App
       </a>
       <a href="/dashboard" class="item">Dashboard</a>
-            <div class="ui simple dropdown item">
+      <div class="ui simple dropdown item">
         Options <i class="dropdown icon"></i>
         <div class="menu">
           <a class="item" href="/upload">Add Activities</a>
@@ -39,22 +39,24 @@
               <th>Duration</th>
               <th>Date</th>
               <th>Type</th>
-              <th>Routes</th>
+              <th>Edit Activity</th>
+              <th>Delete Activity?</th>
             </tr>
           </thead>
           
           <tbody>
   		      @for(i <- 0 until activities.size) {
+  		       <form action="/deleteActivity/@activities(i).id" method="POST">
   		        <tr>
   		          <td> @activities(i).location </td> 
   		          <td> @activities(i).distance km</td>
   		          <td> @activities(i).duration </td> 
   		          <td> @activities(i).date </td> 
   		          <td> @activities(i).activityType </td> 
-  		          <td> @for(a <- 0 until activities(i).route.size) { 
-                    <a class="item" target="_blank" href="http://maps.google.com/?q=@activities(i).route(a).latitude,@activities(i).route(a).longitude"> @activities(i).route(a).toString()</a>
-                  } </td> 
+  		          <td><button class="mini ui teal button"><a href="/editActivity/@activities(i).id">Edit</a></button></td> 
+  		          <td><button class="mini ui red submit button" onclick="return confirm('Are you sure you want to delete this activity">Delete</button></td> 
   		        </tr>
+  		        </form>
   		        }
   		  </tbody>
         </table>

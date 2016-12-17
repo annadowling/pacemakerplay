@@ -34,11 +34,15 @@ DELETE /api/users/:userId/activities/:activityId    controllers.PacemakerAPI.del
 PUT    /api/users/:userId/activities/:activityId    controllers.PacemakerAPI.updateActivity(userId: Long, activityId:Long)
 
 #Activity/Location routes
-GET    /api/activities/:activityId/route                 controllers.PacemakerAPI.locations(activityId: Long)
+GET    /api/activities/:activityId/route                controllers.PacemakerAPI.locations(activityId: Long)
 POST   /api/activities/:activityId/route                controllers.PacemakerAPI.createLocation(activityId: Long)
 GET    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.location(activityId:Long, locationId:Long)
 DELETE /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.deleteLocation(activityId:Long, locationId:Long)
 PUT    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI.updateLocation(activityId:Long, locationId:Long)
+GET    /manageActivities                                @controllers.Dashboard.renderManageActivitiesPage()
+GET    /editActivity/:activityId                        @controllers.Dashboard.showEditActivitiesPage(activityId: Long)
+POST   /submitEditedActivity/:activityId                @controllers.PropsController.editActivity(activityId: Long)
+POST   /deleteActivity/:activityId                @controllers.PropsController.deleteActivity(activityId: Long)
 
 #Friend routes
 GET /follow                                 @controllers.Dashboard.getAllUsers()
