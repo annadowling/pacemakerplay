@@ -46,9 +46,11 @@ public class Friends extends Model {
 	public static List<Friends> findAllFriends(Long userId) {
 		return find.where().eq("userId", userId).findList();
 	}
+	
+	public static List<Friends> findAllPendingFollowRequests(Long friendId, Boolean added) {
+		return find.where().eq("friendId", friendId).eq("added", added).findList();
+	}
 
-	
-	
 	public static Friends findById(Long userId, Long friendId) {
 		return find.where().eq("friendId", friendId).eq("userId", userId).findUnique();
 	}

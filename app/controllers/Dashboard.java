@@ -9,6 +9,7 @@ import java.util.List;
 
 import akka.event.slf4j.Logger;
 import models.Activity;
+import models.Friends;
 import models.Location;
 import models.User;
 import play.data.DynamicForm;
@@ -98,6 +99,27 @@ public class Dashboard extends Controller
 		  FriendUtils.followFriend(currentUser.id, friendId);
 	  }
 	  return showFriendsPage();
+  }
+  
+  public Result showPendingFollowRequests(){
+	  String email = session().get("email");
+	  User currentUser = User.findByEmail(email);
+	  List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(currentUser.id);
+	  List<User> usersToAccept = new ArrayList<User>();
+	  for(Friends friendToAccept: pendingFriends){
+		  User userToAdd = User.findById(friendToAccept.userId);
+		  usersToAccept.add(userToAdd);
+	  }
+	  return ok(pending_follow_requests.render(usersToAccept));
+  }
+  
+  public Result acceptFollowRequest(Long friendId){
+	  String email = session().get("email");
+	  User currentUser = User.findByEmail(email);
+	  if(currentUser != null){
+		FriendUtils.acceptFollowRequest(currentUser.id, friendId);  
+	  }
+	  return showPendingFollowRequests();
   }
   
   public Result unFriend(Long friendId){

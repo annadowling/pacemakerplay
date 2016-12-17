@@ -1,13 +1,13 @@
-@(activities: List[Activity])
-
-@main(s"Welcome") { 
+@(users: List[User])
+@currentUser = @{User.findByEmail(session().get("email"))}
+@main(s"Follow Requests") { 
 <div class="ui fixed inverted menu">
     <div class="ui container">
       <a href="#" class="header item">
         PaceMaker App
       </a>
       <a href="/dashboard" class="item">Dashboard</a>
-            <div class="ui simple dropdown item">
+      <div class="ui simple dropdown item">
         Options <i class="dropdown icon"></i>
         <div class="menu">
           <a class="item" href="/upload">Add Activities</a>
@@ -24,43 +24,35 @@
         </div>
       </div>
     </div>
-  </div>    
+  </div>   
   <br>
-  <section class="ui raised segment">
+    <br>
+      <br>
+  <div class="ui middle aligned center aligned grid">  
     <div class="ui grid">
-      <aside class="six wide column">
-        <img src="" class="ui medium image">
-      </aside>
-      <article class="eight wide column">
-        <h3> <class="ui header"> Activities </h3>
+      <article class="thirty wide column">
         <table class="ui celled table segment">
-          <thead>
+        <thead>
             <tr>
-              <th>Location</th>
-              <th>Distance</th>
-              <th>Duration</th>
-              <th>Date</th>
-              <th>Type</th>
-              <th>Routes</th>
+              <th>@currentUser.firstname 's follow requests</th>
+              <th>Accept?</th>
             </tr>
           </thead>
-          
           <tbody>
-  		      @for(i <- 0 until activities.size) {
+  		     @for(i <- 0 until users.size){
+  		     @if(users(i).id != currentUser.id) {
+  		     <form action="/acceptFollowRequest/@users(i).id" method="POST">
   		        <tr>
-  		          <td> @activities(i).location </td> 
-  		          <td> @activities(i).distance km</td>
-  		          <td> @activities(i).duration </td> 
-  		          <td> @activities(i).date </td> 
-  		          <td> @activities(i).activityType </td> 
-  		          <td> @for(a <- 0 until activities(i).route.size) { 
-                    <a class="item" target="_blank" href="http://maps.google.com/?q=@activities(i).route(a).latitude,@activities(i).route(a).longitude">Show on Map</a>
-                  } </td> 
+  		          <td> <i class="right triangle icon"></i> @users(i).firstname @users(i).lastname
+  		          <td><button class="mini ui green submit button" onclick="return confirm('Are you sure you want to accept request from @users(i).firstname @users(i).lastname');"> <i class="add user icon"></i>Accept</button></td> 
+  		        </td>
   		        </tr>
+  		        </form>
+  		        }
   		        }
   		  </tbody>
         </table>
       </article>
     </div>
-  </section>
+      </div>
 }

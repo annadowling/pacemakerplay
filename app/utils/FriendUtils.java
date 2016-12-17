@@ -14,10 +14,25 @@ public class FriendUtils {
 		Friends f = null;
 		if (following == null) {
 			f = new Friends(userId, friendId);
-			f.added = true;
 			f.save();
 		}
 	}
+	
+	public static List<Friends> getAllPendingFollowRequests(Long userId){
+		Boolean added = false;
+		List<Friends> pendingFollowRequests = Friends.findAllPendingFollowRequests(userId, added);
+		return pendingFollowRequests;	
+	}
+	
+	public static void acceptFollowRequest(Long userId, Long friendId){
+		Friends followRequest = Friends.findById(friendId, userId);
+		if (followRequest != null) {
+		followRequest.added = true;
+		followRequest.save();
+		}
+	}
+	
+
 	
 	public static void unfollowFriend(Long userId, Long friendId) {
 		Friends thisFriendship = Friends.findById(userId, friendId);
@@ -30,8 +45,10 @@ public class FriendUtils {
 		List<Friends> allFriends = Friends.findAllFriends(userId);
 		List<User> friendsOfCurrentUser = new ArrayList<User>();
 		for(Friends friend: allFriends){
+			if(friend.added == true){
 			User user = User.findById(friend.friendId);
 			friendsOfCurrentUser.add(user);
+			}
 		}
 		return friendsOfCurrentUser;	
 	}

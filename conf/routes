@@ -54,6 +54,8 @@ POST /follow/:friendId                      @controllers.Dashboard.addFriend(fri
 GET /showFriends                            @controllers.Dashboard.showFriendsPage()
 POST /unFollow/:friendId                    @controllers.Dashboard.unFriend(friendId: Long)
 GET /publicProfile/:friendId                @controllers.Dashboard.showFriendsPublicProfile(friendId: Long)
+GET /followRequests                         @controllers.Dashboard.showPendingFollowRequests()
+POST /acceptFollowRequest/:friendId           @controllers.Dashboard.acceptFollowRequest(friendId: Long)
 
 #Map routes
 GET /map                                     controllers.Dashboard.getMap()
