@@ -22,7 +22,11 @@ public class Dashboard extends Controller
   {
     String email = session().get("email");
     User user = User.findByEmail(email);
+    if(user != null){
     return ok(dashboard_main.render(user.activities));
+    }else{
+    	return badRequest(login.render());
+    }
   }
   
   public Result uploadActivityForm()
