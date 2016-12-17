@@ -1,5 +1,5 @@
-@(activityId: Long)
-@main("Edit Activity") {
+@(locationId: Long)
+@main("Edit Location") {
 <div class="ui fixed inverted menu">
     <div class="ui container">
       <a href="#" class="header item">
@@ -22,50 +22,27 @@
       </div>
     </div>
   </div>    
-    <br>
   <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <br>
- <form action="/submitEditedActivity/@activityId" method="POST" class="ui large form">
+    <form action="/submitEditedLocation/@locationId" method="POST" class="ui large form">
       <div class="ui stacked secondary  segment">
-      <h3 class="ui header">Edit Activity Details: </h3>
+      <h3 class="ui header">Edit Location Details: </h3>
         <br>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="write square icon"></i>
-            <input type="text" name="location" placeholder="Location">
-          </div>
-        </div>
-          <br>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="write square icon"></i>
-            <input type="text" name="activityType" placeholder="Type">
-          </div>
-        </div>
-          <br>
           <div class="field">
           <div class="ui left icon input">
             <i class="write square icon"></i>
-            <input type="number" name="distance" placeholder="Distance">
-          </div>
-        </div>
-        <br>
-           <div class="field">
-          <div class="ui left icon input">
-            <i class="calendar icon"></i>
-            <input type="date" name="date" placeholder="Date">
+            <input type="long" name="latitude" placeholder="Latitude">
           </div>
         </div>
         <br>
            <div class="field">
           <div class="ui left icon input">
             <i class="write square icon"></i>
-            <input type="number" name="duration" placeholder="Duration">
+            <input type="long" name="longitude" placeholder="Longitude">
           </div>
         </div>
         <br>
-         <button type="submit" class="ui fluid large teal submit button" onclick="return confirm('Are you sure you want to edit this activity');">Save Edits</button>
+        <button class="ui fluid large teal submit button" onclick="Ensure latitude and longitude are in the correct format (14.12345 -10.22334)">Edit Location</button>
       </div>
     </form> 
   </div>

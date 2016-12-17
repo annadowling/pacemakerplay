@@ -42,7 +42,11 @@ PUT    /api/activities/:activityId/route/:locationId    controllers.PacemakerAPI
 GET    /manageActivities                                @controllers.Dashboard.renderManageActivitiesPage()
 GET    /editActivity/:activityId                        @controllers.Dashboard.showEditActivitiesPage(activityId: Long)
 POST   /submitEditedActivity/:activityId                @controllers.PropsController.editActivity(activityId: Long)
-POST   /deleteActivity/:activityId                @controllers.PropsController.deleteActivity(activityId: Long)
+POST   /deleteActivity/:activityId                      @controllers.PropsController.deleteActivity(activityId: Long)
+GET    /manageLocations                                 @controllers.Dashboard.renderManageLocationsPage()
+GET    /editLocation/:locationId                        @controllers.Dashboard.showEditLocationsPage(locationId: Long)
+POST   /submitEditedLocation/:locationId                @controllers.PropsController.editLocation(locationId: Long)
+POST   /deleteLocation/:locationId                      @controllers.PropsController.deleteLocation(locationId: Long)
 
 #Friend routes
 GET /follow                                 @controllers.Dashboard.getAllUsers()

@@ -3,6 +3,7 @@ package controllers;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,12 @@ import play.mvc.*;
 import play.mvc.Controller;
 import models.Activity;
 import models.Friends;
+import models.Location;
 import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import utils.FriendUtils;
 import views.html.*;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,19 +62,58 @@ public class PropsController extends Controller{
 	
 
 	public Result deleteActivity(Long activityId) {
-		String email = session().get("email");
-		User currentUser = User.findByEmail(email);
-		List<Activity> usersActivities = currentUser.activities;
 		Activity activityToDelete = Activity.findById(activityId);
 		if (activityToDelete != null) {
-			for(Activity activity: usersActivities){
-				if(activity == activityToDelete){
-					usersActivities.remove(activity);
-				}
-			}
 			activityToDelete.delete();
 		}
-		return ok(manage_activities.render(currentUser.activities));
+		return showActivitiesPage();
 	}
+	
+	public Result deleteLocation(Long locationId) {
+		Location locationToDelete = Location.findById(locationId);
+		if (locationToDelete != null) {
+			locationToDelete.delete();
+		}
+		return showLocationsPage();
+	}
+	
+	public Result showActivitiesPage()
+	  {
+	    String email = session().get("email");
+	    User currentUser = User.findByEmail(email);
+	    List<Activity> usersActivities = currentUser.activities;
+	    return ok(manage_activities.render(usersActivities));
+	  }
+	
+	public Result showLocationsPage()
+	  {
+	    String email = session().get("email");
+	    User currentUser = User.findByEmail(email);
+	    List<Activity> usersActivities = currentUser.activities;
+	    List<Location> routes = new ArrayList<Location>();
+	    for(Activity activity: usersActivities){
+	    	routes.addAll(activity.route);
+	    } 
+	    return ok(manage_locations.render(routes));
+	  }
+	
+	public Result editLocation(Long locationId)
+	  {
+		    Result result = null;
+			DynamicForm requestData = Form.form().bindFromRequest();
+			Location location = Location.findById(locationId);
+			String latitude = requestData.get("latitude");
+			String longitude = requestData.get("longitude");
+			if (latitude.matches("\\-?(?:\\d+\\.?\\d*|\\d*\\.?\\d+)")
+					&& longitude.matches("\\-?(?:\\d+\\.?\\d*|\\d*\\.?\\d+)")) {
+				if(location != null){
+					location.latitude = Float.parseFloat(latitude);
+					location.longitude = Float.parseFloat(longitude);	
+				}
+				location.save();
+			} 
+			result = ok(edit_location.render(location.id));
+			return result;
+	  }
 
 }

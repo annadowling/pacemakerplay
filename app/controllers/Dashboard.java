@@ -2,6 +2,8 @@ package controllers;
 
 import static parsers.JsonParser.renderUser;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -141,5 +143,28 @@ public class Dashboard extends Controller
 	  }
 	  return ok(edit_activity.render(activity.id));
 	  
+  }
+  
+  public Result renderManageLocationsPage(){
+	  String email = session().get("email");
+	    User user = User.findByEmail(email);
+	    List<Location> routes = new ArrayList<Location>();
+	    if(user != null){
+	    List<Activity> activities = user.activities;
+	    for(Activity activity: activities){
+	    	routes.addAll(activity.route);
+	    }  
+	    return ok(manage_locations.render(routes));
+	    }else{
+	    	return badRequest(login.render());
+	    }  
+  }
+  
+  public Result showEditLocationsPage(Long locationId){
+	  Location location = null;
+	  if(locationId != null){
+		  location = Location.findById(locationId);
+	  }
+	  return ok(edit_location.render(location.id));	  
   }
 }
