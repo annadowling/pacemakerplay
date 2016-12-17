@@ -1,27 +1,5 @@
 @(locationId: Long)
 @main("Edit Location") {
-<div class="ui fixed inverted menu">
-    <div class="ui container">
-      <a href="#" class="header item">
-        PaceMaker App
-      </a>
-      <a href="/dashboard" class="item">Dashboard</a>
-      <div class="ui simple dropdown item">
-        Options <i class="dropdown icon"></i>
-        <div class="menu">
-          <a class="item" href="/upload">Add Activities</a>
-          <a class="item" href="/manageLocation ">Add locations</a>
-          <a class="item" href="/manageActivities">Manage Activities</a>
-          <a class="item" href="/follow">Follow Friends</a>
-          <a class="item" href="/showFriends">View Friends</a>
-          <a class="item" href="/map">Map</a>
-          <a class="item" href="/editProfile">Edit User Profile</a>
-          <div class="divider"></div>
-          <a class="item" href="@routes.AuthController.logout()">Log out</a>
-        </div>
-      </div>
-    </div>
-  </div>    
   <div class="ui middle aligned center aligned grid">
   <div class="column">
     <form action="/submitEditedLocation/@locationId" method="POST" class="ui large form">
