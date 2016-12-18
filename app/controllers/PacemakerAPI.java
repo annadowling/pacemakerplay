@@ -7,6 +7,10 @@ import java.util.*;
 
 import models.*;
 
+/**
+ * 
+ * @author annadowling
+ */
 public class PacemakerAPI extends Controller
 {  
 
@@ -230,27 +234,4 @@ public class PacemakerAPI extends Controller
       }
     }
   }
-  
-  public static Result followFriend(Long userId, Long friendId) {
-	  Friends friendExists = Friends.findById(userId, friendId);
-		Friends friend = null;
-		if (friendExists == null) {
-			friend = new Friends(userId, friendId);
-			friend.save();
-		}
-		User user = new User();
-		return ok(renderUser(user));
-	}
-  
-	public static Result unfollowFriend(Long userId, Long friendId) {
-		Friends currentUser = Friends.findById(userId, friendId);
-		Friends friend = Friends.findById(friendId, userId);
-		String result = "Not Deleted";
-		if (currentUser != null && friend != null && currentUser.added == true) {
-			currentUser.delete();
-			friend.delete();
-			result = "Deleted";
-		}
-		return ok(result);
-	}
 }

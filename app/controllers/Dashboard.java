@@ -18,34 +18,59 @@ import play.mvc.*;
 import services.FriendUtils;
 import views.html.*;
 
+/**
+ * Controller manages the rendering of the feature pages throughout the application.
+ * @author annadowling
+ */
 public class Dashboard extends Controller
 {
-	
+	 String email = session().get("email");
+	 User currentUser = User.findByEmail(email);
+
+	/**
+	 * Gets the currently logged in user from session() and renders their activities to the dashboard landing page.
+	 * @return Result
+	 */
   public Result index()
   {
-    String email = session().get("email");
-    User user = User.findByEmail(email);
     if(user != null){
-    return ok(dashboard_main.render(user.activities));
+    return ok(dashboard_main.render(currentUser.activities));
     }else{
     	return badRequest(login.render());
     }
   }
   
+  /**
+   * Renders the activity creation form page
+   * @return Result
+   */
   public Result uploadActivityForm()
   {
     return ok(dashboard_uploadactivity.render());
   }
   
+  /**
+   * Renders the google maps page
+   * @return Result
+   */
   public Result getMap(){
 	  return ok(map.render()); 
   }
   
+  /**
+   * Renders the location management page for editing and deleting locations
+   * @return Result
+   */
   public Result manageLocations()
   {
     return ok(dashboard_managelocations.render());
   } 
 
+  /**
+   * Retrieves activity values from the form and creates the activity from these values.
+   * Activity is then added to the currentUsers list of activities.
+   * @return Result redirect to activity dashboard
+   */
   public Result submitActivity()
   {
 	Form<Activity> boundForm = Form.form(Activity.class).bindFromRequest();    
@@ -56,14 +81,16 @@ public class Dashboard extends Controller
       return badRequest();
     }
 
-    String email = session().get("email");
-    User user = User.findByEmail(email);
-
-    user.activities.add(activity);
-    user.save();
+    currentUser.activities.add(activity);
+    currentUser.save();
     return redirect (routes.Dashboard.index());
   }
   
+  /**
+   * Retrieves location values from the form and creates the location from these values.
+   * Location is then added to the currently selected activity as a route.
+   * @return Result redirect to activity dashboard
+   */
   public Result submitLocation(Long activityId)
   {
 	    Result result = null;
@@ -84,26 +111,38 @@ public class Dashboard extends Controller
 		}
 		return result;
   }
-  
+ 
+  /**
+   * Retrieves all users currently registered.
+   * Renders the list of users to the show users page
+   * @return Result 
+   */
   public Result  getAllUsers()
   {
     List<User> users = User.findAll();
     return ok(show_users.render(users));
   }
   
+  /**
+   * Retrieves all users currently registered.
+   * Adds an entry for the currentUser and the selected friend to the Friends model using the FriendUtils method: followFriend().
+   * @param friendId
+   * @return Result showFriendsPage();
+   */
   public Result addFriend(Long friendId){
 	  List<User> users = User.findAll();
-	  String email = session().get("email");
-	  User currentUser = User.findByEmail(email);
 	  if(currentUser != null){
 		  FriendUtils.followFriend(currentUser.id, friendId);
 	  }
 	  return showFriendsPage();
   }
   
+  /**
+   * Retrieves all pending friend requests for the logged in user using FriendUtils.getAllPendingFollowRequests()
+   * Renders this list of users to the follow requests page.
+   * @return Result 
+   */
   public Result showPendingFollowRequests(){
-	  String email = session().get("email");
-	  User currentUser = User.findByEmail(email);
 	  List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(currentUser.id);
 	  List<User> usersToAccept = new ArrayList<User>();
 	  for(Friends friendToAccept: pendingFriends){
@@ -113,32 +152,45 @@ public class Dashboard extends Controller
 	  return ok(pending_follow_requests.render(usersToAccept));
   }
   
+  /**
+   * Accepts the selected follow request for the currently logged in user using FriendUtils.acceptFollowRequest().
+   * @param friendId
+   * @return Result 
+   */
   public Result acceptFollowRequest(Long friendId){
-	  String email = session().get("email");
-	  User currentUser = User.findByEmail(email);
 	  if(currentUser != null){
 		FriendUtils.acceptFollowRequest(currentUser.id, friendId);  
 	  }
 	  return showPendingFollowRequests();
   }
   
+  /**
+   * Deletes the selected friendship entry using FriendUtils.unfollowFriend().
+   * @param friendId
+   * @return Result 
+   */
   public Result unFriend(Long friendId){
-	  String email = session().get("email");
-	  User currentUser = User.findByEmail(email);
 	  if(currentUser != null){
 		  FriendUtils.unfollowFriend(currentUser.id, friendId);
 	  }
 	  return showFriendsPage();
   }
   
+  /**
+   * Renders the friends list for the currently logged in user using FriendUtils.showfriends().
+   * @return Result 
+   */
   public Result showFriendsPage()
   {
-    String email = session().get("email");
-    User currentUser = User.findByEmail(email);
     List<User> friendsOfCurrentUser = FriendUtils.showfriends(currentUser.id);
     return ok(show_friends.render(friendsOfCurrentUser));
   }
   
+  /**
+   * Renders the public profile of friends for the currently logged in user using FriendUtils.findUserByfriendId().
+   * @param friendId
+   * @return Result 
+   */
   public Result showFriendsPublicProfile(Long friendId){
 	  User user = null;
 	  if(friendId != null){
@@ -148,16 +200,23 @@ public class Dashboard extends Controller
 	  
   }
   
+  /**
+   * Renders the activity management page with a list of current users activities.
+   * @return Result 
+   */
   public Result renderManageActivitiesPage(){
-	    String email = session().get("email");
-	    User user = User.findByEmail(email);
-	    if(user != null){
-	    return ok(manage_activities.render(user.activities));
+	    if(currentUser != null){
+	    return ok(manage_activities.render(currentUser.activities));
 	    }else{
 	    	return badRequest(login.render());
 	    }  
   }
   
+  /**
+   * Renders the activity edit form page for the selected activity.
+   * @param activityId
+   * @return Result 
+   */
   public Result showEditActivitiesPage(Long activityId){
 	  Activity activity = null;
 	  if(activityId != null){
@@ -166,13 +225,15 @@ public class Dashboard extends Controller
 	  return ok(edit_activity.render(activity.id));
 	  
   }
-  
+ 
+  /**
+   * Renders the location management page with a list of current users activities routes.
+   * @return Result 
+   */
   public Result renderManageLocationsPage(){
-	  String email = session().get("email");
-	    User user = User.findByEmail(email);
 	    List<Location> routes = new ArrayList<Location>();
 	    if(user != null){
-	    List<Activity> activities = user.activities;
+	    List<Activity> activities = currentUser.activities;
 	    for(Activity activity: activities){
 	    	routes.addAll(activity.route);
 	    }  
@@ -182,6 +243,11 @@ public class Dashboard extends Controller
 	    }  
   }
   
+  /**
+   * Renders the location edit form page for the selected location.
+   * @param locationId
+   * @return Result 
+   */
   public Result showEditLocationsPage(Long locationId){
 	  Location location = null;
 	  if(locationId != null){

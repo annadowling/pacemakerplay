@@ -23,8 +23,17 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.inject.Inject;
 
+/**
+ * Controller used for handling the deletion and updating of various model properties for activity and location from form entries. 
+ * @author annadowling
+ */
 public class PropsController extends Controller{
-	
+
+	/**
+	 * Retrieves values from an activity form and determines whether to update the values for that activity.
+	 * @param activityId
+	 * @return Result
+	 */
 	public Result editActivity(Long activityId) {
 		Result result = null;
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -60,7 +69,11 @@ public class PropsController extends Controller{
         return result;
 	}
 	
-
+	/**
+	 * Deletes the selected activity entry
+	 * @param activityId
+	 * @return Result showActivitiesPage()
+	 */
 	public Result deleteActivity(Long activityId) {
 		Activity activityToDelete = Activity.findById(activityId);
 		if (activityToDelete != null) {
@@ -69,6 +82,11 @@ public class PropsController extends Controller{
 		return showActivitiesPage();
 	}
 	
+	/**
+	 * Deletes the selected location entry
+	 * @param locationId
+	 * @return Result showLocationsPage()
+	 */
 	public Result deleteLocation(Long locationId) {
 		Location locationToDelete = Location.findById(locationId);
 		if (locationToDelete != null) {
@@ -77,6 +95,10 @@ public class PropsController extends Controller{
 		return showLocationsPage();
 	}
 	
+	/**
+	 * Renders the manage activities page with a list of the current users activities.
+	 * @return Result 
+	 */
 	public Result showActivitiesPage()
 	  {
 	    String email = session().get("email");
@@ -85,6 +107,10 @@ public class PropsController extends Controller{
 	    return ok(manage_activities.render(usersActivities));
 	  }
 	
+	/**
+	 * Renders the manage activities page with a list of the current users activity routes(locations).
+	 * @return Result 
+	 */
 	public Result showLocationsPage()
 	  {
 	    String email = session().get("email");
@@ -97,6 +123,11 @@ public class PropsController extends Controller{
 	    return ok(manage_locations.render(routes));
 	  }
 	
+	/**
+	 * Retrieves values from a location form and determines whether to update the values for that location.
+	 * @param locationId
+	 * @return Result
+	 */
 	public Result editLocation(Long locationId)
 	  {
 		    Result result = null;
