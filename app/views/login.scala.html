@@ -4,14 +4,10 @@
     <br>
  <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui image header">
-      <div class="content">
-        Login to the PaceMaker App
-      </div>
-    </h2>
       <br>
     <form class="ui large form" action="/authenticate" method="POST">
       <div class="ui stacked secondary  segment">
+       <h3 class="ui header"> Login to the PaceMaker App</h3>
         <br>
         <div class="field">
           <div class="ui left icon input">
@@ -29,9 +25,7 @@
           <br>
            <button type="submit" class="ui fluid large teal submit button">Login</button>
       </div>
-
     </form>
-
     <div class="ui message">
        Don't have an account yet? <a href="@routes.AuthController.signup()">Sign up now!</a>
     </div>

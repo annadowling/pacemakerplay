@@ -1,5 +1,6 @@
 @(locationId: Long)
 @main("Edit Location") {
+ @menu() 
   <div class="ui middle aligned center aligned grid">
   <div class="column">
     <form action="/submitEditedLocation/@locationId" method="POST" class="ui large form">

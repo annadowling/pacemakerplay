@@ -1,6 +1,7 @@
 @(users: List[User])
 @currentUser = @{User.findByEmail(session().get("email"))}
 @main(s"View Friends") {  
+ @menu() 
   <br>
     <br>
       <br>

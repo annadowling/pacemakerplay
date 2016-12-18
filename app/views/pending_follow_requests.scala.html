@@ -1,6 +1,7 @@
 @(users: List[User])
 @currentUser = @{User.findByEmail(session().get("email"))}
-@main(s"Follow Requests") {   
+@main(s"Follow Requests") {  
+ @menu()  
   <br>
     <br>
       <br>

@@ -1,6 +1,7 @@
 @(userId: Long)
 @publicUser = @{User.findById(userId)}
-@main(s"Welcome to @publicUser.firstname @publicUser.lastname 's profile") {    
+@main(s"Welcome to @publicUser.firstname @publicUser.lastname 's profile") {  
+ @menu()   
   <br>
   <section class="ui raised segment">
     <div class="ui grid">

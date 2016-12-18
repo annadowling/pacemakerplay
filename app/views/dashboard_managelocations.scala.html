@@ -2,6 +2,7 @@
 @loggedInUser = @{User.findByEmail(session().get("email"))}
 
   @main("Add Locations") {
+   @menu() 
   <br>
     <section class="ui raised segment">
       <div class="ui grid">
