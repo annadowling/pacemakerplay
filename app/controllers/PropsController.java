@@ -17,7 +17,7 @@ import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
-import utils.FriendUtils;
+import services.FriendUtils;
 import views.html.*;
 import java.util.Objects;
 import java.util.Optional;

@@ -57,6 +57,14 @@ GET /publicProfile/:friendId                @controllers.Dashboard.showFriendsPu
 GET /followRequests                         @controllers.Dashboard.showPendingFollowRequests()
 POST /acceptFollowRequest/:friendId           @controllers.Dashboard.acceptFollowRequest(friendId: Long)
 
+#Report routes
+GET /reports                               @controllers.ReportController.renderActivityReportPage()
+GET /byDate                                @controllers.ReportController.filterByDate()
+GET /byType                                @controllers.ReportController.filterByType()
+GET /byLocation                            @controllers.ReportController.filterByLocation()
+GET /byDistance                            @controllers.ReportController.filterByDistance()
+GET /byDuration                            @controllers.ReportController.filterByDuration()
+
 #Map routes
 GET /map                                     controllers.Dashboard.getMap()
 

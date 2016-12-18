@@ -15,7 +15,7 @@ import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.*;
-import utils.FriendUtils;
+import services.FriendUtils;
 import views.html.*;
 
 public class Dashboard extends Controller
@@ -149,7 +149,7 @@ public class Dashboard extends Controller
   }
   
   public Result renderManageActivitiesPage(){
-	  String email = session().get("email");
+	    String email = session().get("email");
 	    User user = User.findByEmail(email);
 	    if(user != null){
 	    return ok(manage_activities.render(user.activities));

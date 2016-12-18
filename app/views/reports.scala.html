@@ -1,0 +1,49 @@
+@(activities: List[Activity])
+
+@main(s"Activities Report") {    
+  <br>
+  <section class="ui raised segment">
+    <div class="ui grid">
+      <aside class="six wide column">
+        <img src="" class="ui medium image">
+      </aside>
+      <article class="eight wide column">
+       <div class="ui simple dropdown item">
+    <b>Please Select an Activity Filter</b> <i class="dropdown icon"></i>
+    <div class="menu">
+        <a class="tiny ui teal button" href="/byDate">Filter By Date</a>
+        <a class="tiny ui teal button" href="/byType">Filter By Type</a>
+        <a class="tiny ui teal button" href="/byLocation">Filter By Location</a>
+        <a class="tiny ui teal button" href="/byDistance">Filter By Distance</a>
+        <a class="tiny ui teal button" href="/byDuration">Filter By Duration</a>
+    </div>
+</div>
+<br>
+<br>
+        <table class="ui celled table segment">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Distance</th>
+              <th>Duration</th>
+              <th>Date</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+  		      @for(i <- 0 until activities.size) {
+  		        <tr>
+  		          <td> @activities(i).location </td> 
+  		          <td> @activities(i).distance km</td>
+  		          <td> @activities(i).duration </td> 
+  		          <td> @activities(i).date </td> 
+  		          <td> @activities(i).activityType </td> 
+  		        </tr>
+  		        }
+  		  </tbody>
+        </table>
+      </article>
+    </div>
+  </section>
+}
