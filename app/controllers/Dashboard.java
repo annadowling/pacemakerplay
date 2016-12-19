@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import akka.event.slf4j.Logger;
 import models.Activity;
 import models.Friends;
@@ -14,6 +16,7 @@ import models.Location;
 import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.*;
 import services.FriendUtils;
 import views.html.*;
@@ -24,17 +27,22 @@ import views.html.*;
  */
 public class Dashboard extends Controller
 {
-	 String email = session().get("email");
-	 User currentUser = User.findByEmail(email);
-
+	 
+	 public User getCurrentUser(){
+		 String email = session().get("email");;
+		 User currentUser = User.findByEmail(email);
+		 return currentUser;
+		 
+	 }
+	
 	/**
 	 * Gets the currently logged in user from session() and renders their activities to the dashboard landing page.
 	 * @return Result
 	 */
   public Result index()
   {
-    if(user != null){
-    return ok(dashboard_main.render(currentUser.activities));
+    if(getCurrentUser() != null){
+    return ok(dashboard_main.render(getCurrentUser().activities));
     }else{
     	return badRequest(login.render());
     }
@@ -81,8 +89,8 @@ public class Dashboard extends Controller
       return badRequest();
     }
 
-    currentUser.activities.add(activity);
-    currentUser.save();
+    getCurrentUser().activities.add(activity);
+    getCurrentUser().save();
     return redirect (routes.Dashboard.index());
   }
   
@@ -131,8 +139,8 @@ public class Dashboard extends Controller
    */
   public Result addFriend(Long friendId){
 	  List<User> users = User.findAll();
-	  if(currentUser != null){
-		  FriendUtils.followFriend(currentUser.id, friendId);
+	  if(getCurrentUser() != null){
+		  FriendUtils.followFriend(getCurrentUser().id, friendId);
 	  }
 	  return showFriendsPage();
   }
@@ -143,7 +151,7 @@ public class Dashboard extends Controller
    * @return Result 
    */
   public Result showPendingFollowRequests(){
-	  List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(currentUser.id);
+	  List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(getCurrentUser().id);
 	  List<User> usersToAccept = new ArrayList<User>();
 	  for(Friends friendToAccept: pendingFriends){
 		  User userToAdd = User.findById(friendToAccept.userId);
@@ -158,8 +166,8 @@ public class Dashboard extends Controller
    * @return Result 
    */
   public Result acceptFollowRequest(Long friendId){
-	  if(currentUser != null){
-		FriendUtils.acceptFollowRequest(currentUser.id, friendId);  
+	  if(getCurrentUser() != null){
+		FriendUtils.acceptFollowRequest(getCurrentUser().id, friendId);  
 	  }
 	  return showPendingFollowRequests();
   }
@@ -170,8 +178,8 @@ public class Dashboard extends Controller
    * @return Result 
    */
   public Result unFriend(Long friendId){
-	  if(currentUser != null){
-		  FriendUtils.unfollowFriend(currentUser.id, friendId);
+	  if(getCurrentUser() != null){
+		  FriendUtils.unfollowFriend(getCurrentUser().id, friendId);
 	  }
 	  return showFriendsPage();
   }
@@ -182,7 +190,7 @@ public class Dashboard extends Controller
    */
   public Result showFriendsPage()
   {
-    List<User> friendsOfCurrentUser = FriendUtils.showfriends(currentUser.id);
+    List<User> friendsOfCurrentUser = FriendUtils.showfriends(getCurrentUser().id);
     return ok(show_friends.render(friendsOfCurrentUser));
   }
   
@@ -205,8 +213,8 @@ public class Dashboard extends Controller
    * @return Result 
    */
   public Result renderManageActivitiesPage(){
-	    if(currentUser != null){
-	    return ok(manage_activities.render(currentUser.activities));
+	    if(getCurrentUser() != null){
+	    return ok(manage_activities.render(getCurrentUser().activities));
 	    }else{
 	    	return badRequest(login.render());
 	    }  
@@ -232,8 +240,8 @@ public class Dashboard extends Controller
    */
   public Result renderManageLocationsPage(){
 	    List<Location> routes = new ArrayList<Location>();
-	    if(user != null){
-	    List<Activity> activities = currentUser.activities;
+	    if(getCurrentUser() != null){
+	    List<Activity> activities = getCurrentUser().activities;
 	    for(Activity activity: activities){
 	    	routes.addAll(activity.route);
 	    }  
