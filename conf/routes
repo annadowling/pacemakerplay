@@ -10,7 +10,6 @@ POST    /newUser                    @controllers.AuthController.newUser()
 POST    /authenticate               @controllers.AuthController.authenticate()
 GET     /editProfile                @controllers.AuthController.editProfile()
 POST    /editUserProfile            @controllers.AuthController.editUserProfile()
-
 GET     /dashboard                                 controllers.Dashboard.index()
 GET     /upload                                    controllers.Dashboard.uploadActivityForm()
 GET     /manageLocation                              controllers.Dashboard.manageLocations()
