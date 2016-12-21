@@ -118,6 +118,5 @@ public class Activity extends Model {
 	 * 
 	 * @return Model.Finder
 	 */
-	public static Model.Finder<String, Activity> find = new Model.Finder<String, Activity>(String.class,
-			Activity.class);
+	public static Model.Finder<String, Activity> find = new Model.Finder<String, Activity>(String.class,Activity.class);
 }

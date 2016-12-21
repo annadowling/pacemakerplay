@@ -29,14 +29,6 @@ import views.html.*;
  */
 public class Dashboard extends Controller {
 
-	public User getCurrentUser() {
-		String email = session().get("email");
-		;
-		User currentUser = User.findByEmail(email);
-		return currentUser;
-
-	}
-
 	/**
 	 * Gets the currently logged in user from session() and renders their
 	 * activities to the dashboard landing page.
@@ -44,8 +36,10 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result index() {
-		if (getCurrentUser() != null) {
-			return ok(dashboard_main.render(getCurrentUser().activities));
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			return ok(dashboard_main.render(currentUser.activities));
 		} else {
 			return badRequest(login.render());
 		}
@@ -93,8 +87,10 @@ public class Dashboard extends Controller {
 			return badRequest();
 		}
 
-		getCurrentUser().activities.add(activity);
-		getCurrentUser().save();
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		currentUser.activities.add(activity);
+		currentUser.save();
 		return redirect(routes.Dashboard.index());
 	}
 
@@ -146,8 +142,10 @@ public class Dashboard extends Controller {
 	 */
 	public Result addFriend(Long friendId) {
 		List<User> users = User.findAll();
-		if (getCurrentUser() != null) {
-			FriendUtils.followFriend(getCurrentUser().id, friendId);
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			FriendUtils.followFriend(currentUser.id, friendId);
 		}
 		return showFriendsPage();
 	}
@@ -160,7 +158,9 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result showPendingFollowRequests() {
-		List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(getCurrentUser().id);
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		List<Friends> pendingFriends = FriendUtils.getAllPendingFollowRequests(currentUser.id);
 		List<User> usersToAccept = new ArrayList<User>();
 		for (Friends friendToAccept : pendingFriends) {
 			User userToAdd = User.findById(friendToAccept.userId);
@@ -177,8 +177,10 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result acceptFollowRequest(Long friendId) {
-		if (getCurrentUser() != null) {
-			FriendUtils.acceptFollowRequest(getCurrentUser().id, friendId);
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			FriendUtils.acceptFollowRequest(currentUser.id, friendId);
 		}
 		return showPendingFollowRequests();
 	}
@@ -190,8 +192,10 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result unFriend(Long friendId) {
-		if (getCurrentUser() != null) {
-			FriendUtils.unfollowFriend(getCurrentUser().id, friendId);
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			FriendUtils.unfollowFriend(currentUser.id, friendId);
 		}
 		return showFriendsPage();
 	}
@@ -203,7 +207,9 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result showFriendsPage() {
-		List<User> friendsOfCurrentUser = FriendUtils.showfriends(getCurrentUser().id);
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		List<User> friendsOfCurrentUser = FriendUtils.showfriends(currentUser.id);
 		return ok(show_friends.render(friendsOfCurrentUser));
 	}
 
@@ -230,8 +236,10 @@ public class Dashboard extends Controller {
 	 * @return Result
 	 */
 	public Result renderManageActivitiesPage() {
-		if (getCurrentUser() != null) {
-			return ok(manage_activities.render(getCurrentUser().activities));
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			return ok(manage_activities.render(currentUser.activities));
 		} else {
 			return badRequest(login.render());
 		}
@@ -260,8 +268,10 @@ public class Dashboard extends Controller {
 	 */
 	public Result renderManageLocationsPage() {
 		List<Location> routes = new ArrayList<Location>();
-		if (getCurrentUser() != null) {
-			List<Activity> activities = getCurrentUser().activities;
+		String email = session().get("email");
+		User currentUser = User.findByEmail(email);
+		if (currentUser != null) {
+			List<Activity> activities = currentUser.activities;
 			for (Activity activity : activities) {
 				routes.addAll(activity.route);
 			}
